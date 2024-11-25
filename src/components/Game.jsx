@@ -1,44 +1,52 @@
-import React, { useState, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-import GameScene from './GameScene'
-import './Game.css'
+import React, { useState, useEffect } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import GameScene from './GameScene';
+import './Game.css';
 
 function Game({ onGameOver }) {
-  const [score, setScore] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(60)
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   useEffect(() => {
-    document.body.style.cursor = 'none'
+    document.body.style.cursor = 'none';
     return () => {
-      document.body.style.cursor = 'none'
-    }
-  }, [])
+      document.body.style.cursor = 'auto';
+    };
+  }, []);
 
   useEffect(() => {
     if (timeLeft > 0) {
       const timer = setInterval(() => {
-        setTimeLeft(prev => prev - 1)
-      }, 1000)
-      return () => clearInterval(timer)
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
     } else {
-      onGameOver(score)
+      onGameOver(score);
     }
-  }, [timeLeft, score, onGameOver])
+  }, [timeLeft, score, onGameOver]);
 
   const handleBoxDestroy = () => {
-    setScore(prev => prev + 100)
-  }
+    setScore((prev) => prev + 100);
+  };
+
+  const timePercentage = (timeLeft / 60) * 100; 
 
   return (
     <div className="game-container">
+      <div className="time-progress-container">
+        <div
+          className="time-progress-bar"
+          style={{ height: `${timePercentage}%` }}
+        ></div>
+      </div>
       <div className="crosshair"></div>
       <div className="game-hud">
         <div className="score">Score: {score}</div>
         <div className="timer">Time: {timeLeft}s</div>
       </div>
       <Canvas
-        style={{ background: '#808080' }} // Cambia a un tono de gris
+        style={{ background: '#000000' }} // Cambia a un tono de gris
         camera={{ position: [0, 2, 8], fov: 75 }}
       >
         <ambientLight intensity={0.5} />
@@ -52,7 +60,7 @@ function Game({ onGameOver }) {
         />
       </Canvas>
     </div>
-  )
+  );
 }
 
-export default Game
+export default Game;

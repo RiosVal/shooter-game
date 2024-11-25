@@ -57,13 +57,11 @@ function GameScene({ onBoxDestroy }) {
     
     const handleKeyPress = (e) => {
       if (e.code === 'Space') {
-        // Obtiene la posición y dirección de la cámara
         const cameraPosition = new THREE.Vector3()
         const cameraDirection = new THREE.Vector3()
         camera.getWorldPosition(cameraPosition)
         camera.getWorldDirection(cameraDirection)
 
-        // Crea el proyectil ligeramente frente a la cámara
         const projectilePosition = cameraPosition.clone().add(cameraDirection.clone().multiplyScalar(2))
         
         const newProjectile = {
@@ -99,20 +97,16 @@ function GameScene({ onBoxDestroy }) {
   }, [boxes])
 
   useFrame(() => {
-    // Actualiza la posición de los proyectiles
     setProjectiles(prev => prev.map(projectile => ({
       ...projectile,
       position: new THREE.Vector3(...projectile.position).add(projectile.direction.clone().multiplyScalar(0.2)).toArray()
     })))
 
-    // Verifica colisiones y elimina proyectiles
     setProjectiles(prev => prev.filter(projectile => {
       const projectilePos = new THREE.Vector3(...projectile.position)
       
-      // Remueve proyectiles que estén demasiado lejos (30 unidades desde el origen)
       if (projectilePos.length() > 30) return false
 
-      // Verifica colisiones con las cajas
       let collision = false
       setBoxes(prevBoxes => {
         const newBoxes = prevBoxes.filter(boxPos => {
