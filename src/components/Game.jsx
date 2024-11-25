@@ -46,7 +46,7 @@ function Game({ onGameOver }) {
         <div className="timer">Time: {timeLeft}s</div>
       </div>
       <Canvas
-        style={{ background: '#000000' }} // Cambia a un tono de gris
+        style={{ background: '#000000' }}
         camera={{ position: [0, 2, 8], fov: 75 }}
       >
         <ambientLight intensity={0.5} />
